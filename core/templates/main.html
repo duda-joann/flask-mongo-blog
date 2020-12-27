@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1> Navigation </h1>
+    <H2> Tutaj o to znajdziecie wszystkie moje posty od najnowszego do najstarszego </H2>
+    {% for post in posts %}
+    {{post.title}}
+    {{post.body}}
+    {{post.creaton}}
+    {{post.tags }}
+    {% endfor %}
+
+{% endblock %}
+

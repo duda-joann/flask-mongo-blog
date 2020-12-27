@@ -1,6 +1,8 @@
-from flask import Flask
+from flask import Flask, render_template
 import datetime
 from mongoengine import Document
+from werkzeug.security import generate_password_hash
+
 from mongoengine import (DateTimeField,
                          StringField,
                          ReferenceField,
@@ -13,16 +15,13 @@ from core.setting import (connection_string,
                           database_name)
 
 
-def create_app():
-    app = Flask(__name__)
-    app.config['MONGO_DBNAME'] = database_name
-    app.config['MONGO_URI'] = connection_string
-    PyMongo(app)
-
-    return app
+app = Flask(__name__)
+app.config['MONGO_DBNAME'] = database_name
+app.config['MONGO_URI'] = connection_string
+mongo = PyMongo(app)
 
 
-class User(Document):
+class Users(Document):
     username = StringField()
     name = StringField()
     email = StringField()
@@ -39,8 +38,11 @@ class User(Document):
             "creation_date": self.creation_date,
         }
 
+    def generate_hashed_password(self, password):
+        return generate_password_hash(password)
 
-class Post(Document):
+
+class Posts(Document):
     title = StringField()
     body = StringField()
     creation = DateTimeField(default = datetime.datetime.now)
@@ -77,6 +79,20 @@ class Tags(Document):
         }
 
 
+@app.route("/")
+def main_view():
+    posts = mongo.db.Posts.find({})
+    return render_template('main.html', posts = posts)
+
+
+@app.route('/register/')
+def register_user():
+    pass
+
+
+
+
 if __name__ == "__main__":
-    app = create_app()
     app.run(debug=True)
+
+
