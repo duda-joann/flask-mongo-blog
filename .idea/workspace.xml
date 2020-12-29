@@ -2,13 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ca33dcf0-6e6b-480e-b3db-7218566d7929" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/core/templates/navigation.py.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/user/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/user/routes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/templates/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/main.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/templates/navigation.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/user/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/forms/login.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/forms/login.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/models/posts.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/models/posts.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/models/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/models/users.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/settings.py" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

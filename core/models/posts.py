@@ -13,10 +13,7 @@ from mongoengine import (DateTimeField,
                          ObjectIdField,
                          BooleanField)
 from flask_pymongo import PyMongo
-from settings import (connection_string,
-                          database_name)
-
-from app import mongo
+from core.app.db import mongo
 
 class Posts(Document):
     title = StringField()

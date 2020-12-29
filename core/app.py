@@ -1,8 +1,6 @@
 from functools import wraps
 from flask import Flask, render_template, jsonify, session, redirect, request
 import datetime
-from mongoengine import Document
-from werkzeug.security import generate_password_hash
 import pymongo
 from typing import Callable
 from mongoengine import (DateTimeField,
@@ -13,17 +11,11 @@ from mongoengine import (DateTimeField,
                          ObjectIdField,
                          BooleanField)
 from flask_pymongo import PyMongo
-from settings import (connection_string,
-                          database_name)
 from forms.registration import RegistrationForm
+from forms.login import LoginForm
 from models.users import Users
-
-
-app = Flask(__name__)
-app.config['MONGO_DBNAME'] = database_name
-app.config['MONGO_URI'] = connection_string
-app.secret_key= "niemamzielonegopojeciaalecosniewiemcotrzebajakisuniquekluczyklol"
-mongo = PyMongo(app)
+from app.create_app import app
+from app.db import mongo
 
 
 @app.route('/user/signup/', methods=['POST'])
@@ -41,9 +33,13 @@ def signout():
 
 @app.route('/user/login', methods= ['POST'])
 def login():
-    return Users().login()
+    form = LoginForm(request.form)
+    if form.validate_on_submit():
+        return Users.login()
 
-def login_required(function:Callable)->Callable:
+    return render_template('login.html', form=form)
+
+def login_required(function:Callable) ->Callable:
     @wraps(function)
     def wrapper(*args, **kwargs):
         if 'logged_in' in session:

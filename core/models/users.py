@@ -7,7 +7,7 @@ from mongoengine import (
                          DateField,
 )
 
-from app import mongo
+from core.app.db import mongo
 
 
 class Users(Document):

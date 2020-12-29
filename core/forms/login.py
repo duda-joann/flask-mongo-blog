@@ -7,6 +7,11 @@ from wtforms import (BooleanField,
 
 
 class LoginForm(FlaskForm):
-    username = StringField('Username')
-    passworsd = PasswordField
+    username = StringField('Username',
+                            validators.DataRequired()
+                            )
+    password = PasswordField('Pasword',
+                            validators.DataRequired()
+                            )
 
+    submit = SubmitField('Submit')
