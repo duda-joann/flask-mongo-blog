@@ -1,8 +1,10 @@
-from flask import Flask, render_template
+from functools import wraps
+from flask import Flask, render_template, jsonify, session, redirect, request
 import datetime
 from mongoengine import Document
 from werkzeug.security import generate_password_hash
-
+import pymongo
+from typing import Callable
 from mongoengine import (DateTimeField,
                          StringField,
                          ReferenceField,
@@ -11,72 +13,44 @@ from mongoengine import (DateTimeField,
                          ObjectIdField,
                          BooleanField)
 from flask_pymongo import PyMongo
-from core.setting import (connection_string,
+from settings import (connection_string,
                           database_name)
+from forms.registration import RegistrationForm
+from models.users import Users
 
 
 app = Flask(__name__)
 app.config['MONGO_DBNAME'] = database_name
 app.config['MONGO_URI'] = connection_string
+app.secret_key= "niemamzielonegopojeciaalecosniewiemcotrzebajakisuniquekluczyklol"
 mongo = PyMongo(app)
 
 
-class Users(Document):
-    username = StringField()
-    name = StringField()
-    email = StringField()
-    password = StringField()
-    creation_date = DateField(default = datetime.datetime.now())
+@app.route('/user/signup/', methods=['POST'])
+def signup():
+    form = RegistrationForm(request.form)
+    if form.validate_on_submit():
+        return Users.signup()
+    else:
+        return render_template('registration.html', form=form)
 
-    def to_json(self):
-        return {
-            "_id": str(self.pk),
-            "username": self.username,
-            "name": self.name,
-            "email": self.email,
-            "password": self.password,
-            "creation_date": self.creation_date,
-        }
-
-    def generate_hashed_password(self, password):
-        return generate_password_hash(password)
+@app.route('/user/signout/')
+def signout():
+    return Users().signout()
 
 
-class Posts(Document):
-    title = StringField()
-    body = StringField()
-    creation = DateTimeField(default = datetime.datetime.now)
-    published = BooleanField()
-    tags = ListField(ReferenceField('Tags'))
-    author = ListField(ReferenceField('Users'))
+@app.route('/user/login', methods= ['POST'])
+def login():
+    return Users().login()
 
-    def to_json(self):
-        return {
-            "post_id": str(self.pk),
-            "title": self.title,
-            "body": self.body,
-            "creation": self.creation,
-            "published": self.published,
-            "tags": self.tags,
-            "author": self.author,
-
-        }
-
-
-class Tags(Document):
-    id = ObjectIdField()
-    name = StringField(verbose_name='tag',
-                         max_length = 255,
-                         required = True,
-                         unique= True)
-    creation = DateTimeField(default = datetime.datetime.now)
-
-    def to_json(self):
-        return {
-            "tag_id": self.id,
-            "name": self.name,
-            "self.creation": self.creation
-        }
+def login_required(function:Callable)->Callable:
+    @wraps(function)
+    def wrapper(*args, **kwargs):
+        if 'logged_in' in session:
+            return function(*args, **kwargs)
+        else:
+            redirect('/')
+    return wrapper
 
 
 @app.route("/")
@@ -85,14 +59,14 @@ def main_view():
     return render_template('main.html', posts = posts)
 
 
-@app.route('/register/')
-def register_user():
-    pass
-
-
+@app.route('/dashboard/')
+@login_required
+def generate_dashboard():
+    return render_template('navigation.html')
 
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
 

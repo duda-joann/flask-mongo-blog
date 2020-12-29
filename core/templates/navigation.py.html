@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<h1> User Dashboard </h1>
+    {{session['logged_in'] }}
+    {{session['user}}
+<div class ="card-wrapper">
+    <div class="card">
+        <h1 class = "center">Dashboard</h1>
+        <p class="center">You are currently logged in.</p>
+        <a href="/user/signout" class = button"> Signout!</a>
+    </div>
+</div>
+
+{% endblock %}

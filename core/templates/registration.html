@@ -1,0 +1,32 @@
+{% extends 'base.html'%}
+
+
+{%block content % }
+
+< div class = "card-wrapper" >
+< h2 > Registration Form < / h2 >
+< form method = "POST" action = "{url_for('signup')}" >
+<div class = "form-field" >
+{{form.name.label}}
+{{form.name}}
+< / div >
+<div class = "form-field" >
+{{form.email.label}}
+{{form.email}}
+< / div >
+<div class = "form-field" >
+{{form.password.label}}
+{{form.password}}
+< / div >
+<div class = "form-field" >
+{{form.password2.label}}
+{{form.password2}}
+< / div >
+
+{{ form.submit }}
+
+        </form>
+    </div>
+
+{% endblock %}
+
