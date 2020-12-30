@@ -2,8 +2,10 @@ from flask import Flask, render_template, session, request
 from core.forms.registration import RegistrationForm
 from core.forms.login import LoginForm
 from core.models.users import Users
+from core.models.posts import Posts
 from core.common.db import mongo
 from utils import login_required
+from forms.post import NewPostForm
 
 app = Flask(__name__)
 app.config['MONGO_DBNAME'] = 'blog'
@@ -15,7 +17,7 @@ mongo.init_app(app)
 
 @app.route('/')
 def main_view():
-    posts = mongo.db.Posts.find({})
+    posts = Posts().get_posts()
     return render_template('main.html', posts = posts)
 
 
@@ -51,6 +53,12 @@ def login():
 @login_required
 def generate_dashboard():
     return render_template('navigation.html')
+
+
+@app.route('/create-new-post')
+def create_post():
+    form = NewPostForm(request.form)
+    return render_template('new_post.html', form=form)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,32 @@
+{% extends 'base.html'%}
+
+
+{%block content %}
+
+<div class = "card-wrapper">
+<h2> Post Creation Form </h2>
+<form method="POST" action ='/posts/'>
+ {{ form.csrf_token }}
+<div class = "form-field">
+{{form.title.label}}
+{{form.title}}
+< / div >
+<div class = "form-field">
+{{form.body.label}}
+{{form.body}}
+</div>
+<div class = "form-field">
+{{form.published.label}}
+{{form.published}}
+</div>
+<div class = "form-field">
+{{form.tags.label}}
+{{form.tags}}
+</div>
+
+{{ form.submit }}
+
+</form>
+</div>
+
+{% endblock %}

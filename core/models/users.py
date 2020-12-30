@@ -39,10 +39,10 @@ class Users(Document):
     def signup(self):
 
         user = {
-            "username": request.form.data['username'],
-            "name": request.form.data['name'],
-            "email": request.form.data['email'],
-            "password": request.form.data['password'],
+            "username": request.form['username'],
+            "name": request.form['name'],
+            "email": request.form['email'],
+            "password": request.form['password'],
         }
 
         if mongo.Users.find_one({"email": user['email']}):

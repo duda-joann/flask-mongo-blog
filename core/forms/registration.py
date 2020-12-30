@@ -8,7 +8,9 @@ from wtforms import (BooleanField,
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', [validators.Length(min=4)])
-    email = StringField('Email')
+    email = StringField('Email', [
+        validators.Email()
+    ])
     password = PasswordField('Password')
     password2 = PasswordField('Confirm Password',[
                             validators.DataRequired(),
