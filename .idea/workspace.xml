@@ -2,12 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ca33dcf0-6e6b-480e-b3db-7218566d7929" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/core/common/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/core/templates/login.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/core/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/VintageGeraniumBlog.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/VintageGeraniumBlog.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/app/create_app.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/app/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/common/db.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/forms/login.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/forms/login.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/forms/registration.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/forms/registration.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/models/posts.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/models/posts.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/models/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/models/users.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/settings.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/templates/registration.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/registration.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -94,6 +101,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="create_app" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="VintageGeraniumBlog" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/core/app" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/core/app/create_app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="setting" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="VintageGeraniumBlog" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -118,6 +146,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.app (1)" />
+        <item itemvalue="Python.create_app" />
         <item itemvalue="Python.app" />
         <item itemvalue="Python.setting" />
       </list>

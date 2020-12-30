@@ -1,32 +1,32 @@
 {% extends 'base.html'%}
 
 
-{%block content % }
+{%block content %}
 
-< div class = "card-wrapper" >
-< h2 > Registration Form < / h2 >
-< form method = "POST" action = "{url_for('signup')}" >
-<div class = "form-field" >
-{{form.name.label}}
-{{form.name}}
+<div class = "card-wrapper">
+<h2> Registration Form </h2>
+<form method="POST" action ='/user/registered'>
+ {{ form.csrf_token }}
+<div class = "form-field">
+{{form.username.label}}
+{{form.username}}
 < / div >
-<div class = "form-field" >
+<div class = "form-field">
 {{form.email.label}}
 {{form.email}}
-< / div >
-<div class = "form-field" >
+</div>
+<div class = "form-field">
 {{form.password.label}}
 {{form.password}}
-< / div >
-<div class = "form-field" >
+</div>
+<div class = "form-field">
 {{form.password2.label}}
 {{form.password2}}
-< / div >
+</div>
 
 {{ form.submit }}
 
-        </form>
-    </div>
+</form>
+</div>
 
 {% endblock %}
-

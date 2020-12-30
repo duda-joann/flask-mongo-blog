@@ -7,7 +7,7 @@ from mongoengine import (
                          DateField,
 )
 
-from core.app.db import mongo
+from core.common.db import mongo
 
 
 class Users(Document):
@@ -19,7 +19,7 @@ class Users(Document):
 
     def start_session(self, user):
         session['logged_in'] = True
-        session['user']= user
+        session['user'] = user
         return jsonify(user), 200
 
 
@@ -45,7 +45,7 @@ class Users(Document):
             "password": request.form.data['password'],
         }
 
-        if mongo.users.find_one({"email": user['email']}):
+        if mongo.Users.find_one({"email": user['email']}):
             return jsonify({"error": "email address already exists"}), 400
 
         if mongo.users.find_one({"username": user['username']}):
@@ -53,7 +53,7 @@ class Users(Document):
 
         user["password"] = self.generate_hashed_password(user["password"])
 
-        if mongo.Users.insert_one(user):
+        if mongo.db.Users.insert_one(user):
             self.start_session(user)
             return self.start_session(user), jsonify({"message": "success"}), 200
 
@@ -67,11 +67,8 @@ class Users(Document):
     def login(self):
         email = request.form.get("email")
         password = request.form.get("password")
-        user = mongo.users.find_one({"email": email})
+        user = mongo.db.Users.find_one({"email": email})
 
         if user['password'] == password:
             return self.start_session(user)
-        else:
-            return jsonify({"error": "Invalid credentials, please check and back"})
-
         return redirect('/')
