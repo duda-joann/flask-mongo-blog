@@ -58,7 +58,18 @@ def generate_dashboard():
 @app.route('/create-new-post')
 def create_post():
     form = NewPostForm(request.form)
+    if form.validate_on_submit():
+        Posts().create_post()
+
     return render_template('new_post.html', form=form)
+
+@app.route('/update-post/<string:post_id')
+def update_post():
+    pass
+
+@app.route('/delete-post/<string:post_id>')
+def delete_post():
+    pass
 
 
 if __name__ == "__main__":

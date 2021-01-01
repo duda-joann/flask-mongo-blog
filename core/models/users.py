@@ -1,7 +1,7 @@
 from flask import Flask, render_template, jsonify, request, session, redirect
 import datetime
 from mongoengine import Document
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from mongoengine import (
                          StringField,
                          DateField,
@@ -36,6 +36,9 @@ class Users(Document):
     def generate_hashed_password(self, password):
         return generate_password_hash(password)
 
+    def check_hashed_password(self, hashed_password, password):
+        return check_password_hash(hashed_password, password)
+
     def signup(self):
 
         user = {
@@ -45,10 +48,10 @@ class Users(Document):
             "password": request.form['password'],
         }
 
-        if mongo.Users.find_one({"email": user['email']}):
+        if mongo.db.Users.find_one({"email": user['email']}):
             return jsonify({"error": "email address already exists"}), 400
 
-        if mongo.users.find_one({"username": user['username']}):
+        if mongo.db.Users.find_one({"username": user['username']}):
             return jsonify({"error": "email address already exists"}), 400
 
         user["password"] = self.generate_hashed_password(user["password"])
@@ -69,6 +72,6 @@ class Users(Document):
         password = request.form.get("password")
         user = mongo.db.Users.find_one({"email": email})
 
-        if user['password'] == password:
+        if self.check_hashed_password(user['password'], password):
             return self.start_session(user)
         return redirect('/')

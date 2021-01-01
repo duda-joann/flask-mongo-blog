@@ -4,6 +4,7 @@ from wtforms import (
             SelectField,
             SubmitField,
             SelectMultipleField,
+            FormField,
             validators
 )
 from common.db import mongo
@@ -18,7 +19,7 @@ class NewPostForm(FlaskForm):
     published = SelectField('published',
                             choices=['Yes', 'No'],
                             default='Yes')
-    tags = SelectMultipleField('tags',
+    tags = FormField('tags',
                             choices=[mongo.db.Tags.find({})],)
     submit = SubmitField('submit')
 

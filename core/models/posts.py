@@ -1,5 +1,4 @@
-from functools import wraps
-from flask import Flask, render_template, jsonify, session, redirect
+from flask import jsonify, session, redirect, request
 import datetime
 from mongoengine import Document
 from mongoengine import (DateTimeField,
@@ -30,15 +29,29 @@ class Posts(Document):
 
         }
 
-    def get_posts(self):
+    def get_all_posts(self):
         return mongo.db.Posts.find({})
 
+    def get_post(self, id):
+        return mongo.db.Posts.find_one({'post_id': id})
+
     def create_post(self):
+        post = {
+            'title': request.form['title'],
+            'body': request.form['body'],
+            'published': request.form['published'],
+            'tags': [tag for tag in request.form['tags']],
+            'author': session['email'],
+        }
+
+        if mongo.db.Users.insert_one(post):
+            return jsonify({'message', 'Post added successfully'})
+
+        return redirect('/')
+
+    def update_posts(self, id):
         pass
 
-    def update_posts(self):
-        pass
-
-    def delete_post(self):
+    def delete_post(self, id):
         pass
 
