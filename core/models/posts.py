@@ -30,10 +30,16 @@ class Posts(Document):
         }
 
     def get_all_posts(self):
-        return mongo.db.Posts.find({})
+        posts = mongo.db.Posts.find({}).sort('creation')
+        if posts:
+            return posts
+        return jsonify({"message": "There is no posts available"})
 
     def get_post(self, id):
-        return mongo.db.Posts.find_one({'post_id': id})
+        post = mongo.db.Posts.find_one({'post_id': id})
+        if post:
+            return post
+        return jsonify({"error": "post does not exist"}), 404
 
     def create_post(self):
         post = {
@@ -45,13 +51,17 @@ class Posts(Document):
         }
 
         if mongo.db.Users.insert_one(post):
-            return jsonify({'message', 'Post added successfully'})
+            return jsonify({'message', 'Post added successfully'}), 201
 
-        return redirect('/')
+        return redirect('/'),
 
     def update_posts(self, id):
+        post = self.get_post(id)
         pass
 
+
     def delete_post(self, id):
-        pass
+        post = self.get_post(id)
+        mongo.db.Posts.remove(post).first()
+        return jsonify("Post was deleted "), 404
 
