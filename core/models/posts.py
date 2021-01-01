@@ -55,13 +55,26 @@ class Posts(Document):
 
         return redirect('/'),
 
-    def update_posts(self, id):
-        post = self.get_post(id)
-        pass
+    def update_post(self, id):
+        post = Posts.get_post(id)
+        if post.author == session['email']:
+            return jsonify({"error":"Hey Guy, it is not your post, you can not update"}), 403
 
+        post = {
+            'title': request.form['title'],
+            'body': request.form['body'],
+            'published': request.form['published'],
+            'tags': [tag for tag in request.form['tags']],
+            'author': session['email'],
+        }
+
+        if mongo.db.Users.update(post):
+            return jsonify({'message':'Post updated successfully'}), 201
+
+        return redirect('/')
 
     def delete_post(self, id):
         post = self.get_post(id)
         mongo.db.Posts.remove(post).first()
-        return jsonify("Post was deleted "), 404
+        return jsonify({"message": "Post was deleted"}), 404
 
