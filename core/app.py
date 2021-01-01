@@ -3,7 +3,6 @@ from flask import (
                 render_template,
                 session,
                 request)
-from flask_pymongo import PyMongo
 from werkzeug.wrappers import Response
 from core.forms.registration import RegistrationForm
 from core.forms.login import LoginForm
@@ -11,14 +10,13 @@ from core.models.users import Users
 from core.models.posts import Posts
 from utils import login_required
 from forms.post import NewPostForm
-
+from core.common.db import db
 
 app = Flask(__name__)
-app.config['MONGO_DBNAME'] = 'blog'
-app.config['MONGO_URI'] = "mongodb://localhost:27017/myDatabase"
+app.config['MONGO_URI'] = "mongodb://localhost:27017/blog"
 SECRET_KEY = 'nojeszczeczego?!?!'
 app.config['SECRET_KEY'] = SECRET_KEY
-mongo = PyMongo(app)
+db.init_app(app)
 
 
 @app.errorhandler(404)
@@ -87,7 +85,7 @@ def create_post() -> Response:
     return render_template('new_post.html', form=form)
 
 
-@app.route('/update-post/<string:post_id', methods = ['POST', 'PUT'])
+@app.route('/update-post/<string:post_id>', methods = ['POST', 'PUT'])
 def update_post() -> Response:
     """
     update post detail

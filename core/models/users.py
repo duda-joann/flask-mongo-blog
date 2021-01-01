@@ -1,21 +1,21 @@
-from flask import Flask, render_template, jsonify, request, session, redirect
+from flask import (jsonify,
+                   request,
+                   session,
+                   redirect)
 import datetime
-from mongoengine import Document
-from werkzeug.security import generate_password_hash, check_password_hash
-from mongoengine import (
-                         StringField,
-                         DateField,
-)
 
-from core.app import mongo
+from werkzeug.security import (generate_password_hash,
+                               check_password_hash)
+
+from core.common.db import db
 
 
-class Users(Document):
-    username = StringField()
-    name = StringField()
-    email = StringField()
-    password = StringField()
-    creation_date = DateField(default = datetime.datetime.now())
+class Users(db.Document):
+    username = db.StringField()
+    name = db.StringField()
+    email = db.StringField()
+    password = db.StringField()
+    creation_date = db.DateField(default = datetime.datetime.now())
 
     def start_session(self, user):
         session['logged_in'] = True
@@ -48,15 +48,15 @@ class Users(Document):
             "password": request.form['password'],
         }
 
-        if mongo.db.users.find_one({"email": user['email']}):
+        if db.users.find_one({"email": user['email']}):
             return jsonify({"error": "email address already exists"}), 400
 
-        if mongo.db.users.find_one({"username": user['username']}):
+        if db.users.find_one({"username": user['username']}):
             return jsonify({"error": "email address already exists"}), 400
 
         user["password"] = self.generate_hashed_password(user["password"])
 
-        if mongo.db.users.insert_one(user):
+        if db.users.insert_one(user):
             self.start_session(user)
             return self.start_session(user), jsonify({"message": "success"}), 200
 
@@ -70,7 +70,7 @@ class Users(Document):
     def login(self):
         email = request.form.get("email")
         password = request.form.get("password")
-        user = mongo.db.Users.find_one({"email": email})
+        user = db.users.find_one({"email": email})
 
         if self.check_hashed_password(user['password'], password):
             return self.start_session(user)

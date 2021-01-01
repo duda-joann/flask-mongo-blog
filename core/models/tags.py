@@ -6,16 +6,15 @@ from mongoengine import (
                         StringField,
                         ObjectIdField,
                         )
-from core.app import mongo
+from core.common.db import db
 
-
-class Tags(Document):
-    id = ObjectIdField()
-    name = StringField(verbose_name='tag',
+class Tags(db.Document):
+    id = db.ObjectIdField()
+    name = db.StringField(verbose_name='tag',
                          max_length = 255,
                          required = True,
                          unique= True)
-    creation = DateTimeField(default = datetime.datetime.now)
+    creation = db.DateTimeField(default = datetime.datetime.now)
 
     def to_json(self):
         return {
