@@ -3,22 +3,22 @@ from flask import (
                 render_template,
                 session,
                 request)
+from flask_pymongo import PyMongo
 from werkzeug.wrappers import Response
 from core.forms.registration import RegistrationForm
 from core.forms.login import LoginForm
 from core.models.users import Users
 from core.models.posts import Posts
-from core.common.db import mongo
 from utils import login_required
 from forms.post import NewPostForm
 
 
 app = Flask(__name__)
 app.config['MONGO_DBNAME'] = 'blog'
-app.config['MONGO_URI'] = "mongodb+srv://root:root1234@cluster0.qabhw.mongodb.net/<dbname?retryWrites=true&w=majority"
+app.config['MONGO_URI'] = "mongodb://localhost:27017/myDatabase"
 SECRET_KEY = 'nojeszczeczego?!?!'
 app.config['SECRET_KEY'] = SECRET_KEY
-mongo.init_app(app)
+mongo = PyMongo(app)
 
 
 @app.errorhandler(404)

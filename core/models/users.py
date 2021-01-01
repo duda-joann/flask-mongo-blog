@@ -7,7 +7,7 @@ from mongoengine import (
                          DateField,
 )
 
-from core.common.db import mongo
+from core.app import mongo
 
 
 class Users(Document):
@@ -48,15 +48,15 @@ class Users(Document):
             "password": request.form['password'],
         }
 
-        if mongo.db.Users.find_one({"email": user['email']}):
+        if mongo.db.users.find_one({"email": user['email']}):
             return jsonify({"error": "email address already exists"}), 400
 
-        if mongo.db.Users.find_one({"username": user['username']}):
+        if mongo.db.users.find_one({"username": user['username']}):
             return jsonify({"error": "email address already exists"}), 400
 
         user["password"] = self.generate_hashed_password(user["password"])
 
-        if mongo.db.Users.insert_one(user):
+        if mongo.db.users.insert_one(user):
             self.start_session(user)
             return self.start_session(user), jsonify({"message": "success"}), 200
 
@@ -75,3 +75,5 @@ class Users(Document):
         if self.check_hashed_password(user['password'], password):
             return self.start_session(user)
         return redirect('/')
+
+

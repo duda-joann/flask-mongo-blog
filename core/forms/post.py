@@ -7,8 +7,7 @@ from wtforms import (
             FormField,
             validators
 )
-from common.db import mongo
-
+from core.app import mongo
 
 class NewPostForm(FlaskForm):
 

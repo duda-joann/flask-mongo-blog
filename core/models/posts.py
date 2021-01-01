@@ -6,7 +6,7 @@ from mongoengine import (DateTimeField,
                          ReferenceField,
                          ListField,
                          BooleanField)
-from core.common.db import mongo
+from core.app import mongo
 
 
 class Posts(Document):
@@ -30,13 +30,13 @@ class Posts(Document):
         }
 
     def get_all_posts(self):
-        posts = mongo.db.Posts.find({}).sort('creation')
+        posts = mongo.db.posts.find({}).sort('creation')
         if posts:
             return posts
         return jsonify({"message": "There is no posts available"})
 
     def get_post(self, id):
-        post = mongo.db.Posts.find_one({'post_id': id})
+        post = mongo.db.posts.find_one({'post_id': id})
         if post:
             return post
         return jsonify({"error": "post does not exist"}), 404
@@ -50,13 +50,13 @@ class Posts(Document):
             'author': session['email'],
         }
 
-        if mongo.db.Users.insert_one(post):
+        if mongo.db.posts.insert_one(post):
             return jsonify({'message', 'Post added successfully'}), 201
 
         return redirect('/'),
 
     def update_post(self, id):
-        post = Posts.get_post(id)
+        post = mongo.db.posts.get_post(id)
         if post.author == session['email']:
             return jsonify({"error":"Hey Guy, it is not your post, you can not update"}), 403
 
@@ -68,13 +68,14 @@ class Posts(Document):
             'author': session['email'],
         }
 
-        if mongo.db.Users.update(post):
+        if mongo.db.posts.update(post):
             return jsonify({'message':'Post updated successfully'}), 201
 
         return redirect('/')
 
     def delete_post(self, id):
         post = self.get_post(id)
-        mongo.db.Posts.remove(post).first()
+        mongo.db.posts.remove(post).first()
         return jsonify({"message": "Post was deleted"}), 404
+
 

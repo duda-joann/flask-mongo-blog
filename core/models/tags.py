@@ -6,7 +6,7 @@ from mongoengine import (
                         StringField,
                         ObjectIdField,
                         )
-from core.common.db import mongo
+from core.app import mongo
 
 
 class Tags(Document):
