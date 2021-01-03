@@ -12,3 +12,4 @@ class Comments(db.Document):
     meta = {'collection': 'tags', 'queryset_class': BaseQuerySet}
 
 
+

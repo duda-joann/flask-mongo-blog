@@ -11,9 +11,10 @@ from core.models.posts import Posts
 from utils import login_required
 from forms.post import NewPostForm
 from core.common.db import db
+from core.common.app import create_app
 
-app = Flask(__name__)
-app.config['MONGO_URI'] = "mongodb+srv://root:root1234@cluster0.qabhw.mongodb.net/<blog>?retryWrites=true&w=majority"
+app = create_app()
+""" app.config['MONGO_URI'] = "mongodb+srv://root:root1234@cluster0.qabhw.mongodb.net/<blog>?retryWrites=true&w=majority"
 app.config['MONGODB_SETTINGS'] = {
     'db': 'blog',
     'host':"cluster0.qabhw.mongodb.net",
@@ -22,7 +23,7 @@ app.config['MONGODB_SETTINGS'] = {
 }
 SECRET_KEY = 'nojeszczeczego?!?!'
 app.config['SECRET_KEY'] = SECRET_KEY
-db.init_app(app)
+db.init_app(app)"""
 
 
 @app.errorhandler(404)
@@ -41,6 +42,10 @@ def main_view() -> Response:
     posts = Posts().get_all_posts()
     return render_template('main.html', posts = posts)
 
+@app.route('/posts/<string:tag>')
+def posts_by_tag(tag):
+    posts_by_tags = Posts.get_posts_by_tag(tag)
+    return render_template('post.html', posts=posts_by_tags, tag=tag)
 
 @app.route('/user/registered', methods=['POST', 'GET'])
 def register_user() -> Response:
@@ -92,13 +97,13 @@ def create_post() -> Response:
 
 
 @app.route('/update-post/<string:post_id>', methods = ['POST', 'PUT'])
-def update_post() -> Response:
+def update_post(post_id) -> Response:
     """
     update post detail
     :return: in progress
     need to improve update function
     """
-    post = Posts().get_post(id)
+    post = Posts().get_post(post_id)
     form = NewPostForm(request.form)
     if form.validate_on_submit():
         Posts().update_post(id)
@@ -107,12 +112,12 @@ def update_post() -> Response:
 
 
 @app.route('/delete-post/<string:post_id>', methods = ['DELETE'])
-def delete_post() -> Response:
+def delete_post(post_id) -> Response:
     """
     delete choosen by user post
     :return:
     """
-    return Posts().delete_post(id)
+    return Posts().delete_post(post_id)
 
 
 if __name__ == "__main__":

@@ -1,6 +1,5 @@
 from flask import jsonify, session, redirect, request
 import datetime
-from mongoengine import Document
 from mongoengine import (DateTimeField,
                          StringField,
                          ReferenceField,
@@ -22,10 +21,17 @@ class Posts(db.Document):
     meta = {'collection': 'posts', 'queryset_class': BaseQuerySet}
 
     def get_all_posts(self):
-        posts = Posts.objects()
+        posts = Posts.objects().order_by('-creation')
         if posts:
             return posts
         return jsonify({"message": "There is no posts available"})
+
+    def get_posts_by_tag(self, tag: str):
+        posts = Posts.objects().get(tags=tag)
+        if posts:
+            return posts
+        return jsonify({"message": "no post available"})
+
 
     def get_post(self, id):
         post = Posts.objects.get_or_404(id=id)
@@ -34,41 +40,43 @@ class Posts(db.Document):
         return jsonify({"error": "post does not exist"}), 404
 
     def create_post(self):
-        post = {
-            'title': request.form['title'],
-            'body': request.form['body'],
-            'published': request.form['published'],
-            'tags': [tag for tag in request.form['tags']],
-            'author': session['email'],
-        }
+        if request.method == 'POST':
+            post = {
+                'title': request.form['title'],
+                'body': request.form['body'],
+                'published': request.form['published'],
+                'tags': [tag for tag in request.form['tags']],
+                'author': session['email'],
+            }
 
-        if Posts.insert_one(post):
-            return jsonify({'message', 'Post added successfully'}), 201
+            if Posts.insert_one(post):
+                return jsonify({'message', 'Post added successfully'}), 201
 
-        return redirect('/'),
+            return redirect('/'),
 
     def update_post(self, id):
         post = self.get_post(id)
+
         if post.author == session['email']:
             return jsonify({"error":"Hey Guy, it is not your post, you can not update"}), 403
 
-        post = {
-            'title': request.form['title'],
-            'body': request.form['body'],
-            'published': request.form['published'],
-            'tags': [tag for tag in request.form['tags']],
-            'author': session['email'],
-        }
+        if request.method == 'POST':
+            post = {
+                'title': request.form['title'],
+                'body': request.form['body'],
+                'published': request.form['published'],
+                'tags': [tag for tag in request.form['tags']],
+                'author': session['email'],
+            }
 
-        if Posts.update(post):
-            return jsonify({'message':'Post updated successfully'}), 201
-        return redirect('/')
+            if Posts.update(post):
+                return jsonify({'message':'Post updated successfully'}), 201
+            return redirect('/')
 
     def delete_post(self, id):
         post = self.get_post(id)
         if post:
-            Posts.remove(id=id).first()
+            Posts.delete(post).first()
             return jsonify({"message": "Post was deleted"}), 404
         return jsonify({"message": "Post not found"}), 404
-
 

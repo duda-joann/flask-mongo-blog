@@ -18,6 +18,7 @@ class Users(db.Document):
 
     meta = {'collection': 'users', 'queryset_class': BaseQuerySet}
 
+    #added back, should be used
 
     def start_session(self, user):
         session['logged_in'] = True
@@ -32,23 +33,22 @@ class Users(db.Document):
 
     def signup(self):
 
-        user = {
-            "username": request.form['username'],
-            "email": request.form['email'],
-            "password": request.form['password'],
-        }
+        user = Users(
+            username = request.form['username'],
+            email = request.form['email'],
+            password = request.form['password'],
+        )
 
         if Users.objects.get_or_404("email" == user['email']):
             return jsonify({"error": "email address already exists"}), 400
 
         user["password"] = self.generate_hashed_password(user["password"])
 
-        if Users.insert_one(user):
+        if user.save():
             self.start_session(user)
             return self.start_session(user), jsonify({"message": "success"}), 200
 
         return jsonify({"error": "registration not posible"}), 400
-
 
     def signout(self):
         session.clear()
@@ -57,7 +57,7 @@ class Users(db.Document):
     def login(self):
         email = request.form.get("email")
         password = request.form.get("password")
-        user = db.users.find_one({"email": email})
+        user = Users.objects.get_or_404("email" == email)
 
         if self.check_hashed_password(user['password'], password):
             return self.start_session(user)
