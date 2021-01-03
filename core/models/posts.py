@@ -6,6 +6,7 @@ from mongoengine import (DateTimeField,
                          ReferenceField,
                          ListField,
                          BooleanField)
+from flask_mongoengine import BaseQuerySet
 from core.common.db import db
 from .users import Users
 
@@ -18,26 +19,16 @@ class Posts(db.Document):
     tags = db.ListField(ReferenceField('Tags'), default= [])
     author = db.ReferenceField(Users)
 
-    def to_json(self):
-        return {
-            "post_id": str(self.pk),
-            "title": self.title,
-            "body": self.body,
-            "creation": self.creation,
-            "published": self.published,
-            "tags": self.tags,
-            "author": self.author,
-
-        }
+    meta = {'collection': 'posts', 'queryset_class': BaseQuerySet}
 
     def get_all_posts(self):
-        posts = db.Posts.find({}).sort('creation')
+        posts = Posts.objects()
         if posts:
             return posts
         return jsonify({"message": "There is no posts available"})
 
     def get_post(self, id):
-        post = db.posts.find_one({'post_id': id})
+        post = Posts.objects.get_or_404(id=id)
         if post:
             return post
         return jsonify({"error": "post does not exist"}), 404
@@ -51,13 +42,13 @@ class Posts(db.Document):
             'author': session['email'],
         }
 
-        if db.posts.insert_one(post):
+        if Posts.insert_one(post):
             return jsonify({'message', 'Post added successfully'}), 201
 
         return redirect('/'),
 
     def update_post(self, id):
-        post = db.posts.get_post(id)
+        post = self.get_post(id)
         if post.author == session['email']:
             return jsonify({"error":"Hey Guy, it is not your post, you can not update"}), 403
 
@@ -69,14 +60,15 @@ class Posts(db.Document):
             'author': session['email'],
         }
 
-        if db.posts.update(post):
+        if Posts.update(post):
             return jsonify({'message':'Post updated successfully'}), 201
-
         return redirect('/')
 
     def delete_post(self, id):
         post = self.get_post(id)
-        db.posts.remove(post).first()
-        return jsonify({"message": "Post was deleted"}), 404
+        if post:
+            Posts.remove(id=id).first()
+            return jsonify({"message": "Post was deleted"}), 404
+        return jsonify({"message": "Post not found"}), 404
 
 

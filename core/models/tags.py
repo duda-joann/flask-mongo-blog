@@ -6,6 +6,7 @@ from mongoengine import (
                         StringField,
                         ObjectIdField,
                         )
+from flask_mongoengine import BaseQuerySet
 from core.common.db import db
 
 class Tags(db.Document):
@@ -16,10 +17,5 @@ class Tags(db.Document):
                          unique= True)
     creation = db.DateTimeField(default = datetime.datetime.now)
 
-    def to_json(self):
-        return {
-            "tag_id": self.id,
-            "name": self.name,
-            "self.creation": self.creation
-        }
+    meta = {'collection': 'tags', 'queryset_class': BaseQuerySet}
 

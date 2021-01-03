@@ -13,7 +13,13 @@ from forms.post import NewPostForm
 from core.common.db import db
 
 app = Flask(__name__)
-app.config['MONGO_URI'] = "mongodb://localhost:27017/blog"
+app.config['MONGO_URI'] = "mongodb+srv://root:root1234@cluster0.qabhw.mongodb.net/<blog>?retryWrites=true&w=majority"
+app.config['MONGODB_SETTINGS'] = {
+    'db': 'blog',
+    'host':"cluster0.qabhw.mongodb.net",
+    'username': 'root',
+    'password': 'root1234'
+}
 SECRET_KEY = 'nojeszczeczego?!?!'
 app.config['SECRET_KEY'] = SECRET_KEY
 db.init_app(app)
@@ -40,12 +46,12 @@ def main_view() -> Response:
 def register_user() -> Response:
     """
     render user registration form
-    :return: rregistered user, if registration  failed - render registration form view
+    :return: registered user, if registration  failed - render registration form view
     """
     form = RegistrationForm(request.form)
     if request.method == 'POST' and form.validate():
         return Users().signup()
-    return render_template('registration.html', email=session['email'])
+    return render_template('registration.html', form=form)
 
 
 @app.route('/user/signout/', methods=['GET', 'POST'])
