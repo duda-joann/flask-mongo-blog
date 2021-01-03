@@ -41,15 +41,15 @@ class Posts(db.Document):
 
     def create_post(self):
         if request.method == 'POST':
-            post = {
-                'title': request.form['title'],
-                'body': request.form['body'],
-                'published': request.form['published'],
-                'tags': [tag for tag in request.form['tags']],
-                'author': session['email'],
-            }
+            post = Posts(
+                title = request.form['title'],
+                body = request.form['body'],
+                published = request.form['published'],
+                tags = [tag for tag in request.form['tags']],
+                author =session['email'],
+            )
 
-            if Posts.insert_one(post):
+            if post.save():
                 return jsonify({'message', 'Post added successfully'}), 201
 
             return redirect('/'),
@@ -61,22 +61,22 @@ class Posts(db.Document):
             return jsonify({"error":"Hey Guy, it is not your post, you can not update"}), 403
 
         if request.method == 'POST':
-            post = {
-                'title': request.form['title'],
-                'body': request.form['body'],
-                'published': request.form['published'],
-                'tags': [tag for tag in request.form['tags']],
-                'author': session['email'],
-            }
+            post = Posts(
+                title = request.form['title'],
+                body = request.form['body'],
+                published = request.form['published'],
+                tags= [tag for tag in request.form['tags']],
+                author= session['email'],
+            )
 
-            if Posts.update(post):
+            if post.update(id=id):
                 return jsonify({'message':'Post updated successfully'}), 201
             return redirect('/')
 
     def delete_post(self, id):
         post = self.get_post(id)
         if post:
-            Posts.delete(post).first()
+            Posts.delete(id=id).first()
             return jsonify({"message": "Post was deleted"}), 404
         return jsonify({"message": "Post not found"}), 404
 

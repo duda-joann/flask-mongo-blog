@@ -1,7 +1,5 @@
 from flask import (
-                Flask,
                 render_template,
-                session,
                 request)
 from werkzeug.wrappers import Response
 from core.forms.registration import RegistrationForm
@@ -10,21 +8,9 @@ from core.models.users import Users
 from core.models.posts import Posts
 from utils import login_required
 from forms.post import NewPostForm
-from core.common.db import db
 from core.common.app import create_app
 
 app = create_app()
-""" app.config['MONGO_URI'] = "mongodb+srv://root:root1234@cluster0.qabhw.mongodb.net/<blog>?retryWrites=true&w=majority"
-app.config['MONGODB_SETTINGS'] = {
-    'db': 'blog',
-    'host':"cluster0.qabhw.mongodb.net",
-    'username': 'root',
-    'password': 'root1234'
-}
-SECRET_KEY = 'nojeszczeczego?!?!'
-app.config['SECRET_KEY'] = SECRET_KEY
-db.init_app(app)"""
-
 
 @app.errorhandler(404)
 def page_not_found(error) -> Response:
@@ -35,53 +21,23 @@ def page_not_found(error) -> Response:
     return render_template('404.html', error = 404)
 
 @app.route('/')
-def main_view() -> Response:
+def home() -> Response:
     """
     rendering main  page
     """
+    return render_template('main.html')
+
+@app.route('/posts/list/')
+def posts_list():
+    """ render list of all posts """
     posts = Posts().get_all_posts()
-    return render_template('main.html', posts = posts)
+    return render_template('list.html', posts=posts)
 
 @app.route('/posts/<string:tag>')
 def posts_by_tag(tag):
+    """ render list of posts filtered by tags/category"""
     posts_by_tags = Posts.get_posts_by_tag(tag)
     return render_template('post.html', posts=posts_by_tags, tag=tag)
-
-@app.route('/user/registered', methods=['POST', 'GET'])
-def register_user() -> Response:
-    """
-    render user registration form
-    :return: registered user, if registration  failed - render registration form view
-    """
-    form = RegistrationForm(request.form)
-    if request.method == 'POST' and form.validate():
-        return Users().signup()
-    return render_template('registration.html', form=form)
-
-
-@app.route('/user/signout/', methods=['GET', 'POST'])
-def signout() -> Response:
-    """ signout/logout user, ending user session"""
-    return Users().signout()
-
-
-@app.route('/user/login', methods = ['POST', 'GET'])
-def login():
-    """ login  users and starts user session"""
-    form = LoginForm(request.form)
-    if form.validate_on_submit():
-        return Users().login()
-
-    return render_template('login.html', form=form)
-
-
-@app.route('/dashboard/', methods =['POST', 'GET'])
-@login_required
-def generate_dashboard() -> Response:
-    """
-    generate user profile/dashboard with user details, need to add possibility to save fav posts
-    """
-    return render_template('navigation.html')
 
 
 @app.route('/create-new-post', methods = ['POST', 'GET'])
@@ -119,6 +75,41 @@ def delete_post(post_id) -> Response:
     """
     return Posts().delete_post(post_id)
 
+@app.route('/user/registered', methods=['POST', 'GET'])
+def register_user() -> Response:
+    """
+    render user registration form
+    :return: registered user, if registration  failed - render registration form view
+    """
+    form = RegistrationForm(request.form)
+    if request.method == 'POST' and form.validate():
+        return Users().signup()
+    return render_template('registration.html', form=form)
+
+
+@app.route('/user/signout/', methods=['GET', 'POST'])
+def signout() -> Response:
+    """ signout/logout user, ending user session"""
+    return Users().signout()
+
+
+@app.route('/user/login', methods = ['POST', 'GET'])
+def login():
+    """ login  users and starts user session"""
+    form = LoginForm(request.form)
+    if form.validate_on_submit():
+        return Users().login()
+
+    return render_template('login.html', form=form)
+
+
+@app.route('/dashboard/', methods =['POST', 'GET'])
+@login_required
+def generate_dashboard() -> Response:
+    """
+    generate user profile/dashboard with user details, need to add possibility to save fav posts
+    """
+    return render_template('navigation.html')
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -1,7 +1,8 @@
 from flask import (jsonify,
                    request,
                    session,
-                   redirect)
+                   redirect,
+                   url_for)
 import datetime
 from flask_mongoengine import BaseQuerySet
 from werkzeug.security import (generate_password_hash,
@@ -52,7 +53,7 @@ class Users(db.Document):
 
     def signout(self):
         session.clear()
-        return redirect('/')
+        return redirect(url_for('home'))
 
     def login(self):
         email = request.form.get("email")
@@ -66,3 +67,4 @@ class Users(db.Document):
 
 if __name__ =='__main__':
  user = Users()
+
