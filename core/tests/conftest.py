@@ -4,6 +4,7 @@ from models.users import Users
 from models.posts import Posts
 from models.tags import Tags
 
+
 @pytest.fixture
 def create_test_app():
     app = create_app()
@@ -22,6 +23,7 @@ def client(app):
 
         yield client
 
+
 @pytest.fixture
 def create_user():
     user = Users(username='Testik', email='test@test.py', password='password1')
@@ -29,11 +31,13 @@ def create_user():
 
     yield user
 
+
 @pytest.fixture
 def create_tag():
     tag = Tags(name='test')
     tag.save()
     yield tag
+
 
 @pytest.fixture
 def create_post():

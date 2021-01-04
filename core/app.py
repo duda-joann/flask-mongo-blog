@@ -40,7 +40,7 @@ def posts_by_tag(tag):
     return render_template('post.html', posts=posts_by_tags, tag=tag)
 
 
-@app.route('/create-new-post', methods = ['POST', 'GET'])
+@app.route('/create-new-post/', methods = ['POST', 'GET'])
 def create_post() -> Response:
     """
     create  new post by registered user
@@ -52,7 +52,7 @@ def create_post() -> Response:
     return render_template('new_post.html', form=form)
 
 
-@app.route('/update-post/<string:post_id>', methods = ['POST', 'PUT'])
+@app.route('/update-post/<string:post_id>', methods = ['PUT', 'PATCH'])
 def update_post(post_id) -> Response:
     """
     update post detail
@@ -110,9 +110,6 @@ def generate_dashboard() -> Response:
     generate user profile/dashboard with user details, need to add possibility to save fav posts
     """
     return render_template('navigation.html')
-
-if __name__ == "__main__":
-    app.run(debug=True)
 
 
 
