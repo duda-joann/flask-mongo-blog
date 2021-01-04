@@ -8,12 +8,13 @@ def test_app(app):
 
 
 def test_render_main(client):
-    results = client.get(url+'/')
+    results = client.get(url + '/')
     assert results.status_code == 200
+    assert results.get_data
 
 
 def test_posts_lists(client):
-    results = client.get(url+'/posts/list/')
+    results = client.get(url + '/posts/list/')
     assert results.status_code == 200
 
 
@@ -23,12 +24,12 @@ def test_posts_by_tag(client):
 
 
 def test_create_new_post(client):
-    results = client.get(url+ '/create-new-post/')
+    results = client.get(url + '/create-new-post/')
     assert results.status_code == 200
 
 
 def test_update_post(client):
-    results = client.get(url+'update-post/')
+    results = client.get(url + 'update-post/')
     assert results.status_code == 200
 
 
@@ -55,5 +56,3 @@ def test_login(client):
 def test_generate_dashboard(client):
     results = client.get(url + '/dashboard/')
     assert results.status_code == 200
-
-

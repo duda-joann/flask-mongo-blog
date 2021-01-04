@@ -17,8 +17,6 @@ class PostsAllApi(Resource):
     def delete(self, id):
         pass
 
-    def patch(self, id):
-        pass
 
 
 

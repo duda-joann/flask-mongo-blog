@@ -3,6 +3,7 @@ from common.app import create_app
 from models.users import Users
 from models.posts import Posts
 from models.tags import Tags
+from core.app import configure_routes
 
 
 @pytest.fixture
@@ -14,6 +15,7 @@ def create_test_app():
             'username': 'root',
             'password': 'root1234'
         }
+    configure_routes(app)
     yield app
 
 

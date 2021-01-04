@@ -2,9 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ca33dcf0-6e6b-480e-b3db-7218566d7929" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/core/run.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/api/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/api/api.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/templates/404.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/common/templates/404.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/common/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/templates/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/common/templates/list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/common/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/templates/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/common/templates/main.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/templates/navigation.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/common/templates/navigation.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/templates/new_post.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/common/templates/new_post.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/templates/registration.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/common/templates/registration.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/templates/update_post.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/common/templates/update_post.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/tests/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/tests/conftest.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/tests/test_app.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/tests/test_app.py" afterDir="false" />
     </list>
@@ -36,6 +46,7 @@
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\JD\Desktop\VintageGeraniumBlog\core" />
+      <recent name="C:\Users\JD\Desktop\VintageGeraniumBlog\core\common" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -159,8 +170,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.run" />
-        <item itemvalue="Python.main" />
         <item itemvalue="Python.app (1)" />
+        <item itemvalue="Python.main" />
         <item itemvalue="Python.create_app" />
         <item itemvalue="Python.app" />
       </list>
