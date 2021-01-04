@@ -5,14 +5,27 @@ api = Api(app)
 
 
 class PostsAllApi(Resource):
-    def get(self):
+    def get(self, id):
         pass
 
-    def post(self):
+    def post(self, id):
         pass
 
-    def put(self):
+    def put(self, id):
         pass
 
-    def delete(self):
+    def delete(self, id):
         pass
+
+    def patch(self, id):
+        pass
+
+
+
+api.add_resource(PostsAllApi, '/api/v1/posts/<int:posts>' )
+
+
+
+
+
+

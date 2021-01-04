@@ -3,7 +3,7 @@ from core.common.db import db
 from flask_mongoengine import BaseQuerySet
 
 
-class Comments(db.Document):
+class Comments(db.EmbededDocument):
     name = db.StringField(max_length=50)
     email = db.StringField(max_length=60)
     created_at = db.DateTimeField(default=datetime.datetime.now)

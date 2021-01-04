@@ -1,10 +1,12 @@
-from flask import jsonify, session, redirect, request
+from flask import (
+                jsonify,
+                session,
+                redirect,
+                request)
 import datetime
-from mongoengine import (DateTimeField,
-                         StringField,
+from mongoengine import (
                          ReferenceField,
-                         ListField,
-                         BooleanField)
+                         )
 from flask_mongoengine import BaseQuerySet
 from core.common.db import db
 from .users import Users

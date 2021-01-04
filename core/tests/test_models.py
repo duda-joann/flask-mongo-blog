@@ -1,9 +1,6 @@
-from models.users import Users
+import datetime
 
-
-def test_new_user():
-    user = Users(username='Testik', email = 'test@test.py', password='password1')
-    user.save()
+def test_new_user(user):
     assert user.email == 'test@test.py'
     assert user.username == 'Testik'
     #assert user.hashed_password == 'password1'
@@ -11,8 +8,18 @@ def test_new_user():
     # but password is hashed during registration not during creation
 
 
-def test_new_post():
-    pass
+def test_new_post(post):
+    assert post.title == 'Test'
+    assert post.body == 'TestTestTestumTestumem'
+    assert post.published is True
+    assert post.author == 'Testik'
+    assert post.creation != datetime.datetime.now
+
+
+def test_new_tag(tag):
+    assert tag.name == 'test'
+    assert tag.creation != datetime.datetime.now
+
 
 
 
