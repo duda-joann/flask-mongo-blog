@@ -1,8 +1,11 @@
-
+from bson import ObjectId
 import datetime
 from flask import jsonify
 from flask_mongoengine import BaseQuerySet
 from core.common.db import db
+from marshmallow import (Schema,
+                         fields)
+
 
 class Tags(db.Document):
     id = db.ObjectIdField()
@@ -15,16 +18,20 @@ class Tags(db.Document):
     meta = {'collection': 'tags', 'queryset_class': BaseQuerySet}
 
     #added back,  should be used.
-    def to_json(self):
-        return {
-            "tag_id": self.id,
-            "name": self.name,
-            "self.creation": self.creation
-        }
 
     def get_all_tags(self):
         tags = Tags.objects().all()
         if tags:
             return jsonify(tags)
         return jsonify({"message": "There is no tags. Please add some tags"})
+
+
+class TagsSchema(Schema):
+    Schema.TYPE_MAPPING[ObjectId] = fields.String
+    name = fields.Str()
+    creation = fields.Date()
+
+
+tag = TagsSchema()
+tags = TagsSchema(many=True)
 

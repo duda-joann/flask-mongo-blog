@@ -1,10 +1,12 @@
 from app import app
 from flask_restful import Api, Resource
+from flask_marshmallow import Marshmallow
 
+ma = Marshmallow(app)
 api = Api(app)
 
 
-class PostsAllApi(Resource):
+class GetSinglePostApi(Resource):
     def get(self, id):
         pass
 
@@ -20,7 +22,7 @@ class PostsAllApi(Resource):
 
 
 
-api.add_resource(PostsAllApi, '/api/v1/posts/<int:posts>' )
+api.add_resource(GetSinglePostApi, '/api/v1/posts/<int:posts>' )
 
 
 

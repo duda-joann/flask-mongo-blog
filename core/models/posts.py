@@ -1,3 +1,4 @@
+from bson import ObjectId
 from flask import (
                 jsonify,
                 session,
@@ -8,8 +9,13 @@ from mongoengine import (
                          ReferenceField,
                          )
 from flask_mongoengine import BaseQuerySet
+from marshmallow import (Schema,
+                         fields)
+
 from core.common.db import db
-from .users import Users
+from .users import Users, UserSchema
+from .comment import Comments, CommentsSchema
+from .tags import Tags, TagsSchema
 
 
 class Posts(db.Document):
@@ -17,9 +23,9 @@ class Posts(db.Document):
     body = db.StringField()
     creation = db.DateTimeField(default=datetime.datetime.now)
     published = db.BooleanField()
-    tags = db.ListField(ReferenceField('Tags'), default= [])
+    tags = db.ListField(ReferenceField(Tags), default= [])
     author = db.ReferenceField(Users)
-
+    comments = db.ListField(db.EmbeddedDocumentField(Comments))
     meta = {'collection': 'posts', 'queryset_class': BaseQuerySet}
 
     def get_all_posts(self):
@@ -33,7 +39,6 @@ class Posts(db.Document):
         if posts:
             return posts
         return jsonify({"message": "no post available"})
-
 
     def get_post(self, id):
         post = Posts.objects.get_or_404(id=id)
@@ -82,3 +87,20 @@ class Posts(db.Document):
             return jsonify({"message": "Post was deleted"}), 404
         return jsonify({"message": "Post not found"}), 404
 
+
+class PostsSchema(Schema):
+    Schema.TYPE_MAPPING[ObjectId] = fields.String
+    title = fields.Str()
+    body = fields.Str()
+    creation = fields.Date()
+    published = fields.Bool
+    tags = fields.List(fields.Nested(TagsSchema))
+    author = fields.Nested(UserSchema)
+    comments = db.Nested(CommentsSchema)
+
+post_schema = PostsSchema()
+posts_schema = PostsSchema(many=True)
+
+#https://www.mongodb.com/json-and-bson
+#https://www.geeksforgeeks.org/difference-between-json-and-bson/
+#https://blog.tecladocode.com/marshmallow-serialization-mongodb-python/

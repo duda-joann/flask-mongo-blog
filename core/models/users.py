@@ -1,3 +1,4 @@
+from bson import ObjectId
 from flask import (jsonify,
                    request,
                    session,
@@ -5,6 +6,8 @@ from flask import (jsonify,
                    url_for)
 import datetime
 from flask_mongoengine import BaseQuerySet
+from marshmallow import (Schema,
+                         fields)
 from werkzeug.security import (generate_password_hash,
                                check_password_hash)
 
@@ -19,7 +22,6 @@ class Users(db.Document):
 
     meta = {'collection': 'users', 'queryset_class': BaseQuerySet}
 
-    #added back, should be used
 
     def start_session(self, user):
         session['logged_in'] = True
@@ -65,6 +67,13 @@ class Users(db.Document):
         return redirect('/')
 
 
-if __name__ =='__main__':
- user = Users()
+class UserSchema(Schema):
+    Schema.TYPE_MAPPING[ObjectId] = fields.String
+    username = fields.Str()
+    email = fields.Str()
+    password = fields.Str()
+    creation_date = fields.Date()
+
+
+user_schema = UserSchema()
 
