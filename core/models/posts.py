@@ -101,6 +101,3 @@ class PostsSchema(Schema):
 post_schema = PostsSchema()
 posts_schema = PostsSchema(many=True)
 
-#https://www.mongodb.com/json-and-bson
-#https://www.geeksforgeeks.org/difference-between-json-and-bson/
-#https://blog.tecladocode.com/marshmallow-serialization-mongodb-python/
