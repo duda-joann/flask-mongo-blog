@@ -28,7 +28,8 @@ class Posts(db.Document):
     comments = db.ListField(db.EmbeddedDocumentField(Comments))
     meta = {'collection': 'posts', 'queryset_class': BaseQuerySet}
 
-    def get_all_posts(self):
+    @staticmethod
+    def get_all_posts():
         posts = Posts.objects().order_by('-creation')
         if posts:
             return posts
@@ -46,7 +47,8 @@ class Posts(db.Document):
             return post
         return jsonify({"error": "post does not exist"}), 404
 
-    def create_post(self):
+    @staticmethod
+    def create_post():
         if request.method == 'POST':
             post = Posts(
                 title = request.form['title'],
@@ -93,10 +95,11 @@ class PostsSchema(Schema):
     title = fields.Str()
     body = fields.Str()
     creation = fields.Date()
-    published = fields.Bool
+    published = fields.Boolean()
     tags = fields.List(fields.Nested(TagsSchema))
     author = fields.Nested(UserSchema)
-    comments = db.Nested(CommentsSchema)
+    comments = fields.Nested(CommentsSchema)
+
 
 post_schema = PostsSchema()
 posts_schema = PostsSchema(many=True)
